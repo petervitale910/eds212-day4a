@@ -1,0 +1,167 @@
+---
+title: "Interactive session 4a"
+format: html
+editor: visual
+---
+
+#### Gotta Love Linear Algebra
+
+```{r}
+pacman::p_load("tidyverse")
+```
+
+lets make a matrix of 10 values
+
+```{r}
+my_vals = seq (from = 1, 
+               to = 10, 
+               by = 1);my_vals
+#and look at it 
+
+```
+
+but I want 2 rows, and R lets me do that
+
+```{r}
+my_matrix = matrix(data= my_vals, nrow = 2, ncol = 5 , byrow = T); my_matrix
+
+
+```
+
+but r is weird and certain things it will not like
+
+```{r}
+my_matrix = matrix(data= my_vals, nrow = 2, ncol = 3 , byrow = T); my_matrix
+
+```
+
+it will cut off some
+
+what if theres too much space?
+
+```{r}
+my_matrix = matrix(data= my_vals, nrow = 3, ncol = 4 , byrow = T); my_matrix
+
+```
+
+always look what you make
+
+#### Scalar multiplication, addition, subtraction
+
+```{r}
+4*my_matrix
+
+```
+
+addition and subtraction need matrices of the same length
+
+```{r}
+my_vals2 = seq(from = 21,
+               to = 30,
+               by = 1)
+my_matrix2= matrix(data = my_vals2, nrow = 2, ncol = 5);my_matrix2
+```
+
+cool now we can add and subtract
+
+```{r}
+#Add
+my_matrix+my_matrix2
+
+#similar to subtraction 
+my_matrix2 - my_matrix
+```
+
+## Matrix Multiplication
+
+To show this we get to make 2 2x2 matrices
+
+```{r}
+cats = matrix(data= c(0,4,3,1), nrow = 2, ncol = 2, byrow = T);cats
+dogs = matrix(data= c(6, -3, 0, 2), nrow = 2, ncol = 2, byrow = T);dogs
+```
+
+just like for vectors you use %\*%
+
+```{r}
+cats %*% dogs
+```
+
+Nice
+
+#### Leslie Matrix Example 
+
+first we create matrix that we saw in class
+
+```{r}
+insect_leslie = matrix (c(0, 0 , 600, .2, 0, 0, 0, .08, 0 ), nrow =3,
+                        ncol = 3, byrow = T);insect_leslie
+```
+looks good 
+
+now lets specify some initial conditions : 12000 eggs, 700 larva, 500 adult females
+
+```{r}
+insecty0= c(12000, 700, 500); insecty0
+```
+
+Now we can use the dot product to find year1 
+
+```{r}
+insecty1= insect_leslie %*% insecty0; insecty1
+```
+nice now that we have that we can keep going 
+
+```{r}
+insecty2= insect_leslie%*%insecty1;insecty2
+```
+Year 3
+
+```{r}
+insecty3 = insect_leslie%*%insecty2; insecty3
+```
+
+and lastly year 4
+
+```{r}
+insecty4 = insect_leslie %*% insecty3; insecty4
+```
+
+#### Another leslie matrix example 
+
+You have collected information about a type of tree. There are three life stages: seeds (S), juvenile (J) and adult (A). Juvenile trees don’t produce seeds. Adults produce 5000 seeds each year. 10% of seeds produced become seedlings (juveniles), and 6% of seedlings go on to become adults. 95% of adult trees survive each year.
+
+Create the Leslie matrix for this population
+Given an initial population structure of 5000 seeds, 0 juveniles, and 0 adults, project the population structure over 4 years.
+
+Ok so first we need the tree matrix 
+
+```{r}
+tree_leslie = matrix(c(0,0, 5000, .1, 0, 0, 0, .06, .95),
+                     nrow = 3,
+                     ncol = 3,
+                     byrow = T);tree_leslie
+```
+
+ok now we need initial conditions 
+
+```{r}
+treey0 = c(5000, 0, 0 )
+```
+
+cool now lets do the 4 years 
+
+```{r}
+#y1
+treey1 = tree_leslie%*%treey0; treey1
+
+#y2
+treey2 = tree_leslie%*% treey1; treey2
+
+#y3
+treey3 = tree_leslie %*% treey2; treey3
+
+#y4
+treey4 = tree_leslie %*% treey3; treey4
+```
+whew that took a while
